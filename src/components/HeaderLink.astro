@@ -1,10 +1,30 @@
 ---
-const { href, class: className, ...props } = Astro.props;
+interface Props {
+  href: string;
+  colors: {
+    main: {
+      act: string;
+      bg: string;
+      hv: string;
+    }
+  };
+  class?: string;
+}
+
+const { href, colors, class: className } = Astro.props;
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
-
-<a href={href} class={`${isActive && props.colors.main.act} ${props.colors.main.bg} ${props.colors.main.hv} px-1`} >
-	<slot />
+<a 
+  href={href} 
+  class:list={[
+    isActive && colors.main.act,
+    colors.main.bg,
+    colors.main.hv,
+    'px-1',
+    className
+  ]}
+>
+  <slot />
 </a>
