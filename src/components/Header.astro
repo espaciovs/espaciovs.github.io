@@ -3,27 +3,22 @@ import HeaderLink from "./HeaderLink.astro";
 import Footer from "./Footer.astro";
 import { SITE_DESCRIPTION, SITE_SUBTITLE, SITE_TITLE, COLORS } from "../consts";
 ---
-<div class="h-screen flex flex-col">
-<header class="flex-1 flex flex-col sticky top-0">
-	<nav class="flex flex-col p-3 gap-3 flex-1 w-56">
-		<div class="uppercase">
-			<h1 class={`text-2xl px-2 pb-1 ${COLORS.main.bg} mb-1`}>
-				<a href="/">{SITE_TITLE}</a>
-			</h1>
-			<h2 class="text-xs px-1 pt-1">
-				<a href="/">{SITE_SUBTITLE}</a>
-			</h2>
-			<h2 class="text-xs px-1 pt-1">
-				<a href="/">{SITE_DESCRIPTION}</a>
-			</h2>
-		</div>
-		<div class="flex flex-col gap-1 flex-1">
-			<HeaderLink href="/" colors={COLORS}>Inicio</HeaderLink>
-			<HeaderLink href="/blog" colors={COLORS}>Investigación</HeaderLink>
-			<HeaderLink href="/about" colors={COLORS}>Sobre nosotros</HeaderLink
-			>
-		</div>
-	</nav>
-</header>
-<Footer />
+
+<div class="h-screen flex flex-col sticky top-0 p-3">
+    <header class="flex-1 flex flex-col">
+        <nav class="flex flex-col gap-3 flex-1 w-56">
+            <div class="flex flex-col gap-1">
+                <a class={`uppercase text-2xl px-2 ${COLORS.main.act} ${COLORS.main.hv} transition-all`} href="/">{SITE_TITLE}</a>
+                <h2 class={`uppercase text-xs px-1 ${COLORS.main.br} pb-[2px]`}>
+                    <p>{SITE_SUBTITLE}</p>
+                </h2>         
+            </div>
+            <div class="flex flex-col gap-1 flex-1">
+                <HeaderLink href="/" colors={COLORS}>Inicio</HeaderLink>
+                <HeaderLink href="/investigacion" colors={COLORS}>Investigación</HeaderLink>
+                <HeaderLink href="/nosotros" colors={COLORS}>Sobre nosotros</HeaderLink>
+            </div>
+        </nav>
+    </header>
+    <Footer class="w-56"/>
 </div>

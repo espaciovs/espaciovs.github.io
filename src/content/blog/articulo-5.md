@@ -1,8 +1,9 @@
 ---
-title: 'Markdown Style Guide'
-description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: 'Jun 19 2024'
-heroImage: '/blog-placeholder-1.jpg'
+titulo: 'Articulo 5'
+abstract: 'Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur.'
+pubDate: '2025-01-05'
+portada: ''
+tags: ['IAG', 'Diseño']
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

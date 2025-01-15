@@ -1,47 +1,38 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import WebLayout from "./WebLayout.astro";
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { titulo, abstract, pubDate, updatedDate, portada, tags } = Astro.props;
+import { COLORS } from "../consts";
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		
-	</head>
-
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+<WebLayout class="flex justify-center realtive">
+    <article>
+        <div class="prose prose-h1:bg-blue-400 prose-h1:p-1 prose-hr:border-blue-600">
+            <div class={`w-96 h-96 ${COLORS.alt.br} my-10 bg-cover bg-center`} style={`background-image: url(${portada})`}></div>
+            <div class="titulo">
+                <div class="date">
+                    <FormattedDate date={pubDate} />
+                    {
+                        updatedDate && (
+                            <div class="last-updated-on">
+                                Última actualización <FormattedDate date={updatedDate} />
+                            </div>
+                        )
+                    }
+                </div>
+                <h1>{titulo}</h1>
+                <p class="">Abstract:</p>
+                <p class="w-2/3 italic">{abstract}</p>
+                <hr />
+            </div>
+            <slot />
+        </div>
+    </article>
+</WebLayout>

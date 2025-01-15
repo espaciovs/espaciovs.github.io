@@ -2,8 +2,8 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
-const { title, description } = Astro.props;
+import { COLORS } from '../consts';
+const { title, description, class: className } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,13 +12,13 @@ const { title, description } = Astro.props;
 		<BaseHead title={title} description={description} />
 	</head>
 
-	<body class="flex ">
+	<body class="flex min-h-screen">
 		<Header />
-		<main class="flex flex-col">
-				<div class="flex-1">
+		<main class="flex flex-col flex-1 gap-3 py-3 pr-3">
+				<div class={`flex-1 ${COLORS.main.br} p-12 ${className}`}>
 					<slot />
 				</div>
-                <Footer />
+                <Footer class=" sm:hidden"/>
 		</main>
 	</body>
 </html>
