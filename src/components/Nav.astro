@@ -1,0 +1,24 @@
+---
+import HeaderLink from "./HeaderLink.astro";
+import { SITE_SUBTITLE, SITE_TITLE, COLORS } from "../consts";
+const { mobile } = Astro.props;
+---
+
+<nav class={` ${mobile ? "flex sm:hidden" : "flex flex-1"} flex-col gap-3`}>
+    <div class="flex flex-col gap-1">
+        <a
+            class={`uppercase text-2xl px-2 ${COLORS.main.act} ${COLORS.main.hv} transition-all`}
+            href="/">{SITE_TITLE}</a
+        >
+        <h2 class={`uppercase text-xs px-1 ${COLORS.main.br} pb-[2px]`}>
+            <p>{SITE_SUBTITLE}</p>
+        </h2>
+    </div>
+    <div class={`flex flex-col gap-1  ${mobile ? "" : "flex-1"}`}>
+        <HeaderLink href="/" colors={COLORS}>Inicio</HeaderLink>
+        <HeaderLink href="/investigacion" colors={COLORS}
+            >Investigación</HeaderLink
+        >
+        <HeaderLink href="/nosotros" colors={COLORS}>Sobre nosotros</HeaderLink>
+    </div>
+</nav>

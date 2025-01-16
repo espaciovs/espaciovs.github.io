@@ -7,7 +7,7 @@ import FormattedDate from "../../components/FormattedDate.astro";
 ---
 
 <WebLayout title={"Investigación"} description={SITE_DESCRIPTION}>
-    <main class={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10`}>
+    <main class={`grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10`}>
         {
             posts.map((post) => (
                     <a class={`${COLORS.alt.br} shadow-lg hover:shadow-2xl shadow-blue-200 transition-all`} href={`/investigacion/${post.id}/`}>

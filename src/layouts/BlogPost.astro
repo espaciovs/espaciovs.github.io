@@ -13,16 +13,23 @@ import { COLORS } from "../consts";
 ---
 
 <WebLayout class="flex justify-center realtive">
-    <article>
-        <div class="prose prose-h1:bg-blue-400 prose-h1:p-1 prose-hr:border-blue-600">
-            <div class={`w-96 h-96 ${COLORS.alt.br} my-10 bg-cover bg-center`} style={`background-image: url(${portada})`}></div>
+    <article class="max-w-full">
+        <div
+            class="prose prose-h1:bg-blue-400 prose-h1:p-1 prose-hr:border-blue-600 prose-blockquote:bg-blue-100 prose-blockquote:border prose-blockquote:border-blue-600 prose-blockquote:rounded prose-pre:bg-blue-400 "
+        >
+            <div
+                class={`w-full sm:w-96 aspect-square ${COLORS.alt.br} my-10 bg-cover bg-center`}
+                style={`background-image: url(/${portada})`}
+            >
+            </div>
             <div class="titulo">
                 <div class="date">
                     <FormattedDate date={pubDate} />
                     {
                         updatedDate && (
                             <div class="last-updated-on">
-                                Última actualización <FormattedDate date={updatedDate} />
+                                Última actualización{" "}
+                                <FormattedDate date={updatedDate} />
                             </div>
                         )
                     }

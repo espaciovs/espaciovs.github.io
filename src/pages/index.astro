@@ -1,10 +1,24 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import WebLayout from '../layouts/WebLayout.astro'
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import WebLayout from "../layouts/WebLayout.astro";
+import Board from "../components/Board.astro";
+
+const postits = [
+	{
+		id: "1",
+		video: "casaDifusa.mp4",
+	},
+	{
+		id: "2",
+		imagen: "masterclass.jpg",
+	},
+	{
+		id: "3",
+		texto: "El grupo de investigación VerSus está orientado hacia la exploración de entornos virtuales para el diseño de espacios. Contempla el trabajo en torno al corpus teórico y estado del arte del proyecto en ambos entornos. Cuenta con la participación de los expertos del diseño, arquitectura, animación, moda, multimedia y UX y sus tecnologías avanzadas específicas. A partir del ensayo y simulación de casos, utilización de herramientas de IA, IAG y otras, para el análisis de conflictos, resultados y algoritmos participados se quiere involucrar en las metodologías de trabajo para manejar entornos virtuales más transparentes y expertos. ",
+	},
+];
 ---
 
 <WebLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<div class="">
-		<h1>Bienvenido</h1>
-	</div>
+	<Board items={postits} />
 </WebLayout>
