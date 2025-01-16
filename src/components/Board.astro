@@ -28,7 +28,7 @@ const { items } = Astro.props;
           {item.texto}
         </div>}
         {item.imagen && <img src={item.imagen} alt={item.title} class="w-full h-auto">}
-        {item.video && <video class="w-full" autoplay>
+        {item.video && <video class="w-full" autoplay loop>
           <source src={item.video} type="video/mp4">
         </video>}
       </div>
