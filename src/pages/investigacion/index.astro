@@ -13,7 +13,7 @@ import FormattedDate from "../../components/FormattedDate.astro";
                     <a class={`${COLORS.alt.br} shadow-lg hover:shadow-2xl shadow-blue-200 transition-all`} href={`/investigacion/${post.id}/`}>
                         <div
                             class={`w-full h-64 bg-cover bg-center ${COLORS.alt.br} border-t-0 border-x-0`}
-                            style={`background-image: url(${post.data.portada})`}
+                            style={`background-image: url(/${post.data.portada})`}
                         />
                         <h4 class={` text-xl p-2 ${COLORS.alt.br} ${COLORS.alt.bg} border-t-0 border-x-0`}>{post.data.titulo}</h4>
                         <div class={`${COLORS.alt.br} border-t-0 border-x-0 flex`}>
