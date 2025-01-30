@@ -1,7 +1,7 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'Inteligencia artificial y diseño';
+export const SITE_TITLE = 'IAD';
 export const SITE_SUBTITLE = 'Inteligencia artificial aplicada al diseño espacial';
 export const SITE_DESCRIPTION = 'Grupo de investigación Versus. Universos a ambos lados. UDIT';
 export const COLORS = {
