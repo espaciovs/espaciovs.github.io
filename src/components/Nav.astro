@@ -4,24 +4,16 @@ import { SITE_SUBTITLE, SITE_TITLE, COLORS } from "../consts";
 const { mobile } = Astro.props;
 ---
 
-<nav class={` ${mobile ? "flex sm:hidden" : "flex flex-1"} flex-col gap-3`}>
-    <div class="flex flex-col gap-1">
-        <a
-            class={`uppercase px-2 flex justify-end ${COLORS.main.act} ${COLORS.main.hv} transition-all`}
-            href="/">
-<img class="mix-blend-multiply h-16" src="iadlogos.png" />
-            </a
-        >
-        <h1
-            class={`uppercase p-1 px-2 text-xs ${COLORS.main.br} transition-all`}
-            >{SITE_SUBTITLE}</h1
-        >
+<nav class={` ${mobile ? "flex sm:hidden" : "flex flex-1"} flex-col gap-2  font-mono`}>
+    <div class="flex flex-col gap-2">
+        <a class={`uppercase px-1 flex justify-end ${COLORS.main.act} ${COLORS.main.hv} transition-all`} href="/">
+            <img class="mix-blend-multiply h-8 sm:h-12" src="/iadlogos.png" />
+        </a>
+        <h1 class={`uppercas text-xs p-1 transition-all`}>{SITE_SUBTITLE}</h1>
     </div>
-    <div class={`flex flex-col gap-1  ${mobile ? "" : "flex-1"}`}>
+    <div class={`flex flex-col gap-1 ${mobile ? "" : "flex-1"}`}>
         <HeaderLink href="/" colors={COLORS}>Inicio</HeaderLink>
-        <HeaderLink href="/investigacion" colors={COLORS}
-            >Investigación</HeaderLink
-        >
+        <HeaderLink href="/investigacion" colors={COLORS}>Investigación</HeaderLink>
         <HeaderLink href="/nosotros" colors={COLORS}>Sobre nosotros</HeaderLink>
     </div>
 </nav>

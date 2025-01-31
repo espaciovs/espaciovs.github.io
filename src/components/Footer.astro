@@ -4,9 +4,9 @@ import { COLORS, SITE_DESCRIPTION } from "../consts";
 const { class: className } = Astro.props;
 ---
 
-<footer class:list={["flex flex-col gap-1", className]}>
+<footer class:list={["flex flex-col gap-1 font-mono", className]}>
     <div class="flex gap-1">
-        <a href="#" target="_blank" class={` ${COLORS.main.bg} ${COLORS.main.hv} cursor-pointer w-fit p-1`}>
+        <a href="#" target="_blank" class={`  ${COLORS.main.hv} cursor-pointer w-fit p-1`}>
             <svg
                 id="instagram"
                 fill="black"
@@ -41,7 +41,7 @@ const { class: className } = Astro.props;
                 </g>
             </svg>
         </a>
-        <a href="https://github.com/espaciovs" target="_blank" class={` ${COLORS.main.bg} ${COLORS.main.hv} cursor-pointer w-fit p-1`}>
+        <a href="https://github.com/espaciovs" target="_blank" class={`  ${COLORS.main.hv} cursor-pointer w-fit p-1`}>
             <svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24" astro-icon="social/github"
                 ><path
                     fill="black"
@@ -49,11 +49,11 @@ const { class: className } = Astro.props;
                 ></path></svg
             >
         </a>
-        <div class={`flex-1 h-full ${COLORS.main.bg} `}></div>
+        <div class={`flex-1 h-full  `}></div>
         <a
             href="https://udit.es/grupo-de-investigacion-universos-a-ambos-lados-fundamentos-e-interacciones-entre-diseno-realidad-y-espacio-virtual/"
             target="_blank"
-            class={`justify-end ${COLORS.main.bg} ${COLORS.main.hv} cursor-pointer w-fit p-1 flex items-center`}
+            class={`justify-end  ${COLORS.main.hv} cursor-pointer w-fit p-1 flex items-center`}
         >
             <img src="/logo_udit.png" class="w-auto h-[24px]" />
         </a>
