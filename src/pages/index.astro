@@ -2,23 +2,40 @@
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import WebLayout from "../layouts/WebLayout.astro";
 import Board from "../components/Board.astro";
+import { getCollection } from "astro:content";
 
-const postits = [
-	{
-		id: "1",
-		video: "casaDifusa.mp4",
-	},
-	{
-		id: "2",
-		imagen: "masterclass.jpg",
-	},
-	{
-		id: "3",
-		texto: "El grupo de investigación VerSus está orientado hacia la exploración de entornos virtuales para el diseño de espacios. Contempla el trabajo en torno al corpus teórico y estado del arte del proyecto en ambos entornos. Cuenta con la participación de los expertos del diseño, arquitectura, animación, moda, multimedia y UX y sus tecnologías avanzadas específicas. A partir del ensayo y simulación de casos, utilización de herramientas de IA, IAG y otras, para el análisis de conflictos, resultados y algoritmos participados se quiere involucrar en las metodologías de trabajo para manejar entornos virtuales más transparentes y expertos. ",
-	},
-];
+async function reordenarLista(lista) {
+  // Primero transformamos los objetos al nuevo formato
+  const listaTransformada = lista.map(item => {
+    const nuevoObjeto = {
+      id: item.id
+    };
+    
+    // Determinamos el tipo de contenido
+    if (item.data?.video) {
+      nuevoObjeto.video = item.data.video;
+    } else if (item.data?.imagen) {
+      nuevoObjeto.imagen = item.data.imagen;
+    } else {
+      // Si no tiene video ni imagen, usamos el texto del body
+      nuevoObjeto.texto = item.body;
+    }
+    
+    return nuevoObjeto;
+  });
+
+  // Ordenamos la lista poniendo "presentación" al final
+  return listaTransformada.sort((a, b) => {
+    if (a.id === 'presentación') return 1;
+    if (b.id === 'presentación') return -1;
+    return 0;
+  });
+}
+
+// Y luego, donde necesites usarla:
+const inicio = await reordenarLista(await getCollection("inicio"));
 ---
 
 <WebLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<Board items={postits} />
+	<Board items={inicio} />
 </WebLayout>

@@ -16,5 +16,11 @@ export const COLORS = {
         hv: "hover:bg-blue-200 transition-all",
         br: "border border-blue-500",
         act: "bg-blue-400"
+    },
+    raras:{
+        bg: "bg-pink-300",
+        hv: "hover:bg-pink-200 transition-all",
+        br: "border border-pink-500",
+        act: "bg-pink-400"
     }
 }

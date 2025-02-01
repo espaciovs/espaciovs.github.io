@@ -17,8 +17,8 @@ const { items } = Astro.props;
   {
     items.map((item) => (
       <div
-        class="draggable-postit block sm:absolute w-full sm:w-96 max-h-96 max-w-full border border-green-600 bg-white shadow hover:shadow-lg shadow-green-600 rounded overflow-hidden cursor-move select-none"
-        style="z-index: 1;"
+        class="draggable-postit block sm:absolute w-full sm:w-96 max-h-96 max-w-full border border-green-600 bg-white shadow hover:shadow-lg shadow-green-600 rounded overflow-hidden cursor-move select-none transition-opacity"
+        style="z-index: 1; opacity: 0;"
         id={`postit-${item.id}`}
       >
         <div class="postit-header bg-green-200 p-2 text-sm font-semibold">
@@ -171,6 +171,15 @@ const { items } = Astro.props;
         dragElement(element);
       });
       randomizePositions();
+      // Esperamos un pequeño momento para que el DOM se actualice
+    setTimeout(() => {
+      postits.forEach((postit, index) => {
+            // Añadimos un pequeño retraso entre cada elemento
+            setTimeout(() => {
+              postit.style.opacity = "1";
+            }, index * 100); // 100ms entre cada elemento
+        });
+    }, 0);
     }
   }
 

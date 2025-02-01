@@ -17,7 +17,7 @@ import Nav from '../components/Nav.astro';
 		<Header/>
 		<main class="flex flex-col flex-1 p-3 gap-3 max-w-screen">
 				<Nav mobile={true}/>
-				<div class={`flex-1 bg-dot-grid sm:${COLORS.main.br} sm:p-12 ${className}`}>
+				<div class={`flex-1 bg-dot-grid sm:${COLORS.main.br} sm:p-12 sm:pt-4 ${className}`}>
 					<slot />
 				</div>
                 <Footer class="sm:hidden"/>

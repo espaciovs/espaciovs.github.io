@@ -32,7 +32,9 @@ const nosotrxs = defineCollection({
 	// Type-check frontmatter using a schema
 	schema: z.object({
 		posicion: z.string().optional(),
-		imagen: z.string().optional()
+		imagen: z.string().optional(),
+		contacto: z.string().optional(),
+		link: z.string().optional()
 	}),
 });
 

@@ -1,28 +1,102 @@
 ---
-import { SITE_DESCRIPTION } from "../consts";
+import { getCollection } from "astro:content";
+import { SITE_DESCRIPTION, COLORS } from "../consts";
 import WebLayout from "../layouts/WebLayout.astro";
+import { Icon } from 'astro-icon/components'
+
+function procesarLista(lista) {
+    // Separamos la presentación del resto
+    const presentacion = lista.find((item) => item.id === "presentación");
+
+    // Procesamos el resto de objetos
+    const miembros = lista
+        .filter((item) => item.id !== "presentación")
+        .map((item) => {
+            // Extraemos el nombre del filePath
+            const nombreArchivo = item.filePath.split("/").pop().replace(".md", "");
+
+            return {
+                nombre: nombreArchivo,
+                posicion: item.data.posicion || "",
+                imagen: item.data.imagen || "",
+                contacto: item.data.contacto || "",
+                link: item.data.link || "",
+            };
+        });
+
+    return {
+        presentacion: presentacion.body,
+        miembros: miembros,
+    };
+}
+
+const { presentacion, miembros } = procesarLista(await getCollection("nosotrxs"));
 ---
 
 <WebLayout title={"Sobre nosotros"} description={SITE_DESCRIPTION}>
-	<div class="">
-		<h1 class="text-xl pb-10">Sobre nosotros</h1>
-		<p class="max-w-[900px]">
-			El grupo de investigación VerSus está orientado hacia la exploración
-			de entornos virtuales para el diseño de espacios. Contempla el
-			trabajo en torno al corpus teórico y estado del arte del proyecto en
-			ambos entornos. Cuenta con la participación de los expertos del
-			diseño, arquitectura, animación, moda, multimedia y UX y sus
-			tecnologías avanzadas específicas. A partir del ensayo y simulación
-			de casos, utilización de herramientas de IA, IAG y otras, para el
-			análisis de conflictos, resultados y algoritmos participados se
-			quiere involucrar en las metodologías de trabajo para manejar
-			entornos virtuales más transparentes y expertos. Junto a la
-			vertiente especulativa, interesan también las investigaciones
-			aplicadas a casos de estudio con implicaciones de patrimonio,
-			sostenibilidad, trazabilidad y diseño emocional de los procesos para
-			el diseño virtual. Todo ello con el objetivo de profundizar en la
-			investigación transversal acerca de las condiciones del diseño de
-			universos virtuales VerSus universos reales.
-		</p>
-	</div>
+    <div class="flex flex-col gap-10">
+        <h1 class={`text-xl w-fit p-1 bg-green ${COLORS.raras.bg}`}>Sobre el grupo</h1>
+        <p class="max-w-[900px] bg-white">
+            {presentacion}
+        </p>
+        <div id="miembros-container" class="flex flex-wrap gap-3">
+            {
+                miembros.map((miembro) => (
+                    <div class={`miembro border ${COLORS.raras.br} w-full sm:w-60 transition-opacity`} style="opacity: 0;">
+                        <div class="relative">
+                            <div class="w-full aspect-square bg-cover bg-center" style={`background-image: url(/${miembro.imagen})`} />
+                            <div class={` absolute top-0 bottom-0 left-0 right-0 mix-blend-color ${COLORS.raras.bg}`} />
+                        </div>
+                        <div class={`flex ${COLORS.raras.bg} ${COLORS.raras.br} border-x-0`}>
+                            <p class={`p-1 flex-1 `}>{miembro.nombre}</p>
+                            {miembro.link ? (
+                                <a
+                                    href={miembro.link}
+                                    target="_blank"
+                                    class={`p-1 text-xs italic flex  items-center justify-center ${COLORS.raras.bg} ${COLORS.raras.hv} ${COLORS.raras.br} border-y-0 border-r-0`}
+                                >
+                                    <Icon class="text-lg" name="ri:arrow-right-up-line"/>
+                                </a>
+                            ) : null}
+                        </div>
+                        <p class={`p-1 text-xs`}>{miembro.posicion}</p>
+                        {miembro.contacto ? <p class={`p-1 text-xs italic`}>{miembro.contacto}</p> : null}
+                    </div>
+                ))
+            }
+        </div>
+    </div>
 </WebLayout>
+
+<script>
+    function shuffleArray(array) {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
+    }
+
+    const container = document.getElementById("miembros-container");
+    const miembros = Array.from(container.getElementsByClassName("miembro"));
+
+    const miembrosAleatorios = shuffleArray(miembros);
+
+    container.innerHTML = "";
+
+    miembrosAleatorios.forEach((miembro) => {
+        // Primero añadimos el elemento aún oculto
+        container.appendChild(miembro);
+    });
+
+    // Esperamos un pequeño momento para que el DOM se actualice
+    setTimeout(() => {
+        miembrosAleatorios.forEach((miembro, index) => {
+            // Añadimos un pequeño retraso entre cada elemento
+            setTimeout(() => {
+                miembro.style.opacity = "1";
+            }, index * 100); // 100ms entre cada elemento
+        });
+    }, 0);
+</script>
