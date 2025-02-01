@@ -3,7 +3,7 @@
 
 export const SITE_TITLE = 'IAD';
 export const SITE_SUBTITLE = 'Inteligencia artificial aplicada al diseño espacial';
-export const SITE_DESCRIPTION = 'Grupo de investigación Versus. Universos a ambos lados. UDIT';
+export const SITE_DESCRIPTION = 'Grupo de investigación Versus. UDIT';
 export const COLORS = {
     main:{
         bg: "bg-green-200",

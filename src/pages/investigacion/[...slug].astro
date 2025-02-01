@@ -13,6 +13,20 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
+
+function replaceImagePaths(content: string) {
+    // Busca <p>![[nombre-archivo.extension]]</p> y reemplázalo por <p><img src="/img/general/nombre-archivo.extension" alt=""></p>
+    const regex = /<p>!\[\[([^\]]+\.(png|jpg|jpeg|gif|webp|svg))\]\]<\/p>/gi;
+    return content.replace(regex, '<p><img src="/$1" alt=""></p>');
+}
+
+// Modificar el HTML renderizado
+if (post.rendered && post.rendered.html) {
+    post.rendered.html = replaceImagePaths(post.rendered.html);
+}
+
+const titulo = post.filePath.split('/').pop().replace('.md', '');
+
 const { Content } = await render(post);
 ---
 

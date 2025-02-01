@@ -1,0 +1,188 @@
+{
+  "main": {
+    "id": "264d738906cf0a1b",
+    "type": "split",
+    "children": [
+      {
+        "id": "ed39ae8bb6e78ba3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e9f56870bf095f2c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "src/content/blog/Datos y arquitecturas.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Datos y arquitecturas"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "539a34334abdc420",
+    "type": "split",
+    "children": [
+      {
+        "id": "0e30db77591bfdbb",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "269a1c5419181920",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "6ace020fbde62e42",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "71ba0a3e06752ba6",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "df346bc901cf96af",
+    "type": "split",
+    "children": [
+      {
+        "id": "cb70fb9d2d95d9d1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a68cef4d3526a593",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "src/content/blog/Datos y arquitecturas.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Datos y arquitecturas"
+            }
+          },
+          {
+            "id": "fdd27922138bb054",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "src/content/blog/Datos y arquitecturas.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Datos y arquitecturas"
+            }
+          },
+          {
+            "id": "e34271f713c47027",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "19166a97ef4882f6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "src/content/blog/Datos y arquitecturas.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Datos y arquitecturas"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "e9f56870bf095f2c",
+  "lastOpenFiles": [
+    "src/content/blog/makdown.md",
+    "public/comfyui.png",
+    "public/blog-placeholder-about.jpg",
+    "public/blog-placeholder-5.jpg",
+    "public/blog-placeholder-4.jpg",
+    "public/blog-placeholder-3.jpg",
+    "public/blog-placeholder-2.jpg",
+    "public/blog-placeholder-1.jpg",
+    "public/blip2.png",
+    "public/img/comfyui.png",
+    "public/img/blog-placeholder-about.jpg",
+    "public/img",
+    "node_modules/unenv/README.md",
+    "node_modules/ms/license.md"
+  ]
+}

@@ -1,9 +1,11 @@
 ---
-titulo: 'Datos y arquitectura'
-abstract: 'Publicación en proceso'
-pubDate: '2025-04-01'
-portada: 'blog-placeholder-3.jpg'
-tags: ['IAG', 'Diseño']
+titulo: Datos y arquitecturas
+abstract: Publicación en proceso
+pubDate: 2025-04-01
+portada: comfyui.png
+tags:
+  - IAG
+  - Diseño
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
