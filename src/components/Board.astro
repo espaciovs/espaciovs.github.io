@@ -21,7 +21,7 @@ const { items } = Astro.props;
                 style="z-index: 1; opacity: 0;"
                 id={`postit-${item.id}`}
             >
-                <div class="postit-header bg-green-200 p-2 text-sm font-semibold">{item.title}</div>
+                <div class="postit-header bg-green-400 p-2 text-sm font-semibold"></div>
                 {item.texto && <div class="p-3 text-sm">{item.texto}</div>}
                 {item.imagen && <img src={item.imagen} alt={item.title} class="w-full h-auto" />}
                 {item.video && (
