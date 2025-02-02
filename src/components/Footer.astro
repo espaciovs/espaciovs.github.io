@@ -4,7 +4,7 @@ import { COLORS, SITE_DESCRIPTION } from "../consts";
 const { class: className } = Astro.props;
 ---
 
-<footer class:list={["flex flex-col gap-1 font-mono", className]}>
+<footer class:list={["flex flex-col gap-1 ", className]}>
     <div class="flex gap-1">
         <a href="#" target="_blank" class={`  ${COLORS.main.hv} cursor-pointer w-fit p-1`}>
             <svg
@@ -58,5 +58,5 @@ const { class: className } = Astro.props;
             <img src="/logo_udit.png" class="w-auto h-[24px]" />
         </a>
     </div>
-    <div class={` text-xs ${COLORS.main.act} p-1`}>&copy;{today.getFullYear()} {SITE_DESCRIPTION}. All rights reserved.</div>
+    <div class={` text-sm ${COLORS.main.act} p-1 rounded`}>&copy;{today.getFullYear()} {SITE_DESCRIPTION}. All rights reserved.</div>
 </footer>

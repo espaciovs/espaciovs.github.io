@@ -35,19 +35,15 @@ const { presentacion, miembros } = procesarLista(await getCollection("nosotrxs")
 
 <WebLayout title={"Sobre nosotros"} description={SITE_DESCRIPTION}>
     <div class="flex flex-col gap-10">
-        <h1 class={`text-xl w-fit p-1 bg-green ${COLORS.raras.bg}`}>Sobre el grupo</h1>
+        <h1 class={`text-xl w-fit p-1 bg-green ${COLORS.raras.bg} rounded`}>Sobre el grupo</h1>
         <p class="max-w-[900px] bg-white">
             {presentacion}
         </p>
         <div id="miembros-container" class="flex flex-wrap gap-3">
             {
                 miembros.map((miembro) => (
-                    <div class={`miembro border ${COLORS.raras.br} w-full sm:w-60 transition-opacity`} style="opacity: 0;">
-                        <div class="relative">
-                            <div class="w-full aspect-square bg-cover bg-center" style={`background-image: url(/${miembro.imagen})`} />
-                            <div class={` absolute top-0 bottom-0 left-0 right-0 mix-blend-color ${COLORS.raras.bg}`} />
-                        </div>
-                        <div class={`flex ${COLORS.raras.bg} ${COLORS.raras.br} border-x-0`}>
+                    <div class={`miembro shadow  border w-full sm:w-60 transition-opacity bg-white rounded `} style="opacity: 0;">
+                        <div class={`flex ${COLORS.raras.bg} ${COLORS.raras.br} border-x-0 border-t-0 rounded-t`}>
                             <p class={`p-1 flex-1 `}>{miembro.nombre}</p>
                             {miembro.link ? (
                                 <a
@@ -59,6 +55,11 @@ const { presentacion, miembros } = procesarLista(await getCollection("nosotrxs")
                                 </a>
                             ) : null}
                         </div>
+                        <div class="relative">
+                            <div class="w-full aspect-square bg-cover bg-center" style={`background-image: url(/${miembro.imagen})`} />
+                            <div class={` absolute top-0 bottom-0 left-0 right-0 mix-blend-color ${COLORS.raras.bg}`} />
+                        </div>
+                        
                         <p class={`p-1 text-xs`}>{miembro.posicion}</p>
                         {miembro.contacto ? <p class={`p-1 text-xs italic`}>{miembro.contacto}</p> : null}
                     </div>

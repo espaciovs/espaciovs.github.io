@@ -3,12 +3,34 @@
 }
 
 .bg-grid {
-    background-image: linear-gradient(to right, #80808012 1px, transparent 1px),
-        linear-gradient(to bottom, #80808012 1px, transparent 1px);
+    background-image: linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px);
     background-size: 24px 24px;
 }
 
 .bg-dot-grid {
     background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
     background-size: 16px 16px;
+}
+
+@font-face {
+    font-family: "NeueHaasDisplay-Mediu";
+    src: url("/fonts/neue-haas-display/NeueHaasDisplay-Mediu.ttf");
+}
+
+@font-face {
+    font-family: "NeueHaasDisplay-Roman";
+    src: url("/fonts/neue-haas-display/NeueHaasDisplay-Roman.ttf");
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: NeueHaasDisplay-Roman, Arial, Helvetica, sans-serif;
+}
+
+.neueHaas-medium {
+    font-family: NeueHaasDisplay-Mediu, Arial, Helvetica, sans-serif;
+}
+
+.neueHaas-roman {
+    font-family: NeueHaasDisplay-Roman, Arial, Helvetica, sans-serif;
 }
