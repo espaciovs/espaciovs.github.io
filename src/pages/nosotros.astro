@@ -44,12 +44,12 @@ const { presentacion, miembros } = procesarLista(await getCollection("nosotrxs")
                 miembros.map((miembro) => (
                     <div class={`miembro shadow  border w-full sm:w-60 transition-opacity bg-white rounded `} style="opacity: 0;">
                         <div class={`flex ${COLORS.raras.bg} ${COLORS.raras.br} border-x-0 border-t-0 rounded-t`}>
-                            <p class={`p-1 flex-1 `}>{miembro.nombre}</p>
+                            <p class={`p-1 flex-1 rounded-t`}>{miembro.nombre}</p>
                             {miembro.link ? (
                                 <a
                                     href={miembro.link}
                                     target="_blank"
-                                    class={`p-1 text-xs italic flex  items-center justify-center ${COLORS.raras.bg} ${COLORS.raras.hv} ${COLORS.raras.br} border-y-0 border-r-0`}
+                                    class={`p-1 rounded-tr text-xs italic flex  items-center justify-center ${COLORS.raras.bg} ${COLORS.raras.hv} ${COLORS.raras.br} border-y-0 border-r-0`}
                                 >
                                     <Icon class="text-lg" name="ri:arrow-right-up-line"/>
                                 </a>
