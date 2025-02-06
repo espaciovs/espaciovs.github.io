@@ -9,6 +9,7 @@ interface Props {
         video: string;
     }[];
 }
+import { COLORS } from "../consts";
 
 const { items } = Astro.props;
 ---
@@ -17,11 +18,11 @@ const { items } = Astro.props;
     {
         items.map((item) => (
             <div
-                class="draggable-postit block sm:absolute w-full sm:w-96 max-h-96 max-w-full  bg-white shadow hover:shadow-lg shadow-green-600 rounded overflow-hidden cursor-move select-none transition-opacity"
+                class="draggable-postit block sm:absolute w-full sm:w-96 max-h-96 max-w-full  bg-white shadow hover:shadow-lg shadow-purple-600 rounded overflow-hidden cursor-move select-none transition-opacity"
                 style="z-index: 1; opacity: 0;"
                 id={`postit-${item.id}`}
             >
-                <div class="postit-header bg-green-400 p-2 text-sm font-semibold"></div>
+                <div class={`postit-header ${COLORS.main.act} p-2 text-sm font-semibold`}></div>
                 {item.texto && <div class="p-3 text-sm">{item.texto}</div>}
                 {item.imagen && <img src={item.imagen} alt={item.title} class="w-full h-auto" />}
                 {item.video && (

@@ -10,8 +10,8 @@ import FormattedDate from "../../components/FormattedDate.astro";
     <main class={`grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10`}>
         {
             posts.map((post) => (
-                <a class={` rounded bg-white shadow hover:shadow-lg shadow-blue-600 transition-all duration-300`} href={`/investigacion/${post.id}/`}>
-                    <h4 class={` text-xl neueHaas-medium p-2 rounded-t ${COLORS.alt.br} ${COLORS.alt.bg} border-t-0 border-x-0`}>{post.data.titulo}</h4>
+                <a class={` rounded bg-white shadow hover:shadow-lg shadow-purple-600 transition-all duration-300`} href={`/investigacion/${post.id}/`}>
+                    <h4 class={` text-xl neueHaas-medium p-1 rounded-t ${COLORS.alt.br} ${COLORS.alt.bg} border-t-0 border-x-0`}>{post.data.titulo}</h4>
 
                     <div
                         class={`w-full h-64 bg-cover bg-center ${COLORS.alt.br} border-t-0 border-x-0 `}

@@ -6,21 +6,21 @@ export const SITE_SUBTITLE = 'Inteligencia artificial aplicada al diseño espaci
 export const SITE_DESCRIPTION = 'Grupo de investigación Versus. UDIT';
 export const COLORS = {
     main:{
-        bg: "bg-green-200",
-        hv: "hover:bg-green-100 transition-all",
-        br: "border border-green-500",
-        act: "bg-green-400"
+        bg: "bg-purple-200",
+        hv: "hover:bg-purple-100 transition-all",
+        br: "border border-purple-500",
+        act: "bg-purple-400"
     },
     alt:{
-        bg: "bg-blue-300",
-        hv: "hover:bg-blue-200 transition-all",
-        br: "border border-blue-500",
-        act: "bg-blue-400"
+        bg: "bg-purple-300",
+        hv: "hover:bg-purple-200 transition-all",
+        br: "border border-purple-500",
+        act: "bg-purple-400"
     },
     raras:{
-        bg: "bg-pink-300",
-        hv: "hover:bg-pink-200 transition-all",
-        br: "border border-pink-500",
-        act: "bg-pink-400"
+        bg: "bg-purple-300",
+        hv: "hover:bg-purple-200 transition-all",
+        br: "border border-purple-500",
+        act: "bg-purple-400"
     }
 }
