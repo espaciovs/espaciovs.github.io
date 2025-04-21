@@ -4,17 +4,48 @@ import { COLORS, SITE_DESCRIPTION } from "../../consts";
 import WebLayout from "../../layouts/WebLayout.astro";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
+
+// Extraer todas las categorías únicas
+const allCategories = new Set();
+posts.forEach((post) => {
+    if (post.data.tags && Array.isArray(post.data.tags)) {
+        post.data.tags.forEach((tag) => allCategories.add(tag));
+    }
+});
+const uniqueCategories = Array.from(allCategories).sort();
 ---
 
 <WebLayout title={"Investigación"} description={SITE_DESCRIPTION}>
+    <!-- Menú de filtros por categoría -->
+    <div class={`mb-8 p-4 ${COLORS.alt.bg} rounded shadow-md`}>
+        <div class="flex flex-wrap gap-1">
+            <button class={`filtro-btn px-3 py-1 first:rounded-s  text-sm ${COLORS.main.act} ${COLORS.main.br} ${COLORS.main.hv} `} data-categoria="todas">
+                Todas
+            </button>
+            {
+                uniqueCategories.map((tag) => (
+                    <button
+                        class={`filtro-btn px-3 py-1 first:rounded-s  last:rounded-e text-sm ${COLORS.alt.br}  ${COLORS.main.hv}`}
+                        data-categoria={tag}
+                    >
+                        {tag}
+                    </button>
+                ))
+            }
+        </div>
+    </div>
+
     <main class={`grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10`}>
         {
             posts.map((post) => (
-                <a class={` rounded bg-white drop-shadow-sm  hover:drop-shadow-2xl shadow-black transition-all duration-300`} href={`/investigacion/${post.id}/`}>
-                    <h4 class={` text-xl neueHaas-medium p-1 rounded-t ${COLORS.alt.br} ${COLORS.alt.bg} border-t-0 border-x-0`}>{post.data.titulo}</h4>
-
+                <a
+                    class={`post-card rounded bg-white drop-shadow-sm hover:drop-shadow-2xl shadow-black transition-all duration-300`}
+                    href={`/investigacion/${post.id}/`}
+                    data-tags={post.data.tags ? post.data.tags.join(",") : ""}
+                >
+                    <h4 class={`text-xl neueHaas-medium p-1 rounded-t ${COLORS.alt.br} ${COLORS.alt.bg} border-t-0 border-x-0`}>{post.data.titulo}</h4>
                     <div
-                        class={`w-full h-64 bg-cover bg-center ${COLORS.alt.br} border-t-0 border-x-0 `}
+                        class={`w-full h-64 bg-cover bg-center ${COLORS.alt.br} border-t-0 border-x-0`}
                         style={`background-image: url(/${post.data.portada})`}
                     />
                     <div class={`${COLORS.alt.br} border-t-0 border-x-0 flex`}>
@@ -22,7 +53,12 @@ import FormattedDate from "../../components/FormattedDate.astro";
                             <FormattedDate date={post.data.pubDate} />
                         </p>
                         <div class={`${COLORS.alt.br} border-y-0 border-r-0 flex-1 p-2 text-xs flex gap-1`}>
-                            {post.data.tags && post.data.tags.map((tag) => <button class={`${COLORS.alt.br} ${COLORS.alt.hv} p-1`}>{tag}</button>)}
+                            {post.data.tags &&
+                                post.data.tags.map((tag) => (
+                                    <button class={`tag-btn ${COLORS.alt.br} ${COLORS.alt.hv} first:rounded-s last:rounded-e p-1`} data-categoria={tag}>
+                                        {tag}
+                                    </button>
+                                ))}
                         </div>
                     </div>
                     <p class={`p-2 text-sm overflow-auto h-32`}>{post.data.abstract}</p>
@@ -31,3 +67,72 @@ import FormattedDate from "../../components/FormattedDate.astro";
         }
     </main>
 </WebLayout>
+
+<script>
+    // Guardar las clases originales para cada botón
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".filtro-btn").forEach((btn) => {
+            if (btn.dataset.categoria !== "todas") {
+                btn.dataset.originalClasses = Array.from(btn.classList)
+                    .filter(
+                        (cls) =>
+                            cls !== "filtro-btn" &&
+                            !cls.includes("px-") &&
+                            !cls.includes("py-") &&
+                            !cls.includes("rounded") &&
+                            !cls.includes("text-") &&
+                            !cls.includes("transition") &&
+                            !cls.includes("duration")
+                    )
+                    .join(" ");
+            }
+        });
+    });
+
+    // Función para filtrar posts
+    function filtrarPosts(categoria) {
+        // Obtener todos los elementos de post
+        const posts = document.querySelectorAll(".post-card");
+
+        // Actualizar las clases de los botones de filtro
+        document.querySelectorAll(".filtro-btn").forEach((btn) => {
+            if (btn.dataset.categoria === categoria) {
+                btn.className = "filtro-btn px-3 py-1 text-sm first:rounded-s  last:rounded-e bg-purple-400 border border-purple-500";
+            } else {
+                if (btn.dataset.categoria === "todas") {
+                    btn.className = "filtro-btn px-3 py-1 text-sm border border-purple-500 first:rounded-s  last:rounded-e hover:bg-purple-100 transition-all";
+                } else {
+                    btn.className =
+                        "filtro-btn px-3 py-1 text-sm  first:rounded-s  last:rounded-e border border-purple-500 hover:bg-purple-100 transition-all";
+                }
+            }
+        });
+
+        // Mostrar u ocultar los posts según la categoría seleccionada
+        posts.forEach((post) => {
+            const tagsStr = post.dataset.tags;
+            const tags = tagsStr ? tagsStr.split(",") : [];
+
+            if (categoria === "todas" || tags.includes(categoria)) {
+                post.style.display = "";
+            } else {
+                post.style.display = "none";
+            }
+        });
+    }
+
+    // Agregar event listeners a los botones de filtro
+    document.querySelectorAll(".filtro-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            filtrarPosts(btn.dataset.categoria);
+        });
+    });
+
+    // Agregar event listeners a los tags dentro de las tarjetas
+    document.querySelectorAll(".tag-btn").forEach((tag) => {
+        tag.addEventListener("click", (e) => {
+            e.preventDefault();
+            filtrarPosts(tag.dataset.categoria);
+        });
+    });
+</script>
