@@ -197,8 +197,9 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "269a1c5419181920",
+  "active": "58640545e210c9b2",
   "lastOpenFiles": [
+    "src/content/inicio/PRUEBA.md",
     "src/content/inicio/Plantas.md",
     "src/content/inicio/PRUEBA 2.md",
     "src/content/inicio/Imagen char.md",
@@ -238,7 +239,6 @@
     "node_modules/csso/node_modules/css-tree/README.md",
     "node_modules/css-tree/README.md",
     "node_modules/undici/types/README.md",
-    "node_modules/undici/README.md",
     "public/comfyui.png",
     "public/blog-placeholder-about.jpg",
     "public/blog-placeholder-5.jpg",
