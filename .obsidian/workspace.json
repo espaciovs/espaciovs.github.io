@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src/content/nosotrxs/Diana Albares de la Lama-Noriega.md",
+                "file": "src/content/inicio/Presentación.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Diana Albares de la Lama-Noriega"
+              "title": "Presentación"
             }
           }
         ],
@@ -185,21 +185,25 @@
   },
   "active": "3399cb4c581c764d",
   "lastOpenFiles": [
+    "src/content/inicio/Video casa difusa.md",
+    "src/content/inicio/Plantas.md",
+    "src/content/inicio/Presentación.md",
+    "src/content/inicio/Imagen charla.md",
+    "src/content/inicio/Imagen char.md",
+    "README.md",
+    "src/content/plantillas/Nosotrxs.md",
+    "src/content/plantillas/Nota inicio.md",
+    "src/content/nosotrxs/Diana Albares de la Lama-Noriega.md",
+    "ARBOLITO.md",
     "src/content/nosotrxs/Alberto Calderón Rivas.md",
     "src/content/blog/La casa difusa.md",
     "src/content/blog/Prueba.md",
     "public/dkgk.jpg",
-    "ARBOLITO.md",
     "src/content/blog/Datos y arquitecturas.md",
-    "src/content/inicio/Imagen charla.md",
     "src/content/inicio/IMAGEN.md",
     "public/ARBOLITO BONITO.jpg",
     "src/content/inicio/PRUEBA 2.md",
     "src/content/inicio/PRUEBA.md",
-    "src/content/inicio/Imagen char.md",
-    "src/content/inicio/Video casa difusa.md",
-    "src/content/inicio/Presentación.md",
-    "src/content/inicio/Plantas.md",
     "src/content/blog/Observatorio Exploradores de IAG.md",
     "public/datos.png",
     "public/logo2.jpg",
@@ -209,7 +213,6 @@
     "src/content/nosotrxs/Rosa María Barrero Palomino.md",
     "src/content/nosotrxs/José Manuel Santos.md",
     "src/content/nosotrxs/Enrique Villamuelas García.md",
-    "src/content/nosotrxs/Diana Albares de la Lama-Noriega.md",
     "src/content/nosotrxs/Dra. Eva Hurtado.md",
     "public/semanaCiencia.jpg",
     "public/semanaCiencia",
@@ -224,8 +227,6 @@
     "node_modules/@iconify-json/ri/index.js",
     "node_modules/@emnapi/runtime/README.md",
     "node_modules/@emnapi/runtime/package.json",
-    "node_modules/tslib/SECURITY.md",
-    "node_modules/tslib/README.md",
     "public/comfyui.png",
     "public/blog-placeholder-about.jpg",
     "public/blog-placeholder-5.jpg",
