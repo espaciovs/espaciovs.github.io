@@ -27,7 +27,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src/content/inicio/Presentación.md",
+                "file": "src/content/nosotrxs/Presentación.md",
                 "mode": "source",
                 "source": false
               },
@@ -185,8 +185,8 @@
   },
   "active": "3399cb4c581c764d",
   "lastOpenFiles": [
-    "src/content/nosotrxs/Presentación.md",
     "src/content/inicio/Presentación.md",
+    "src/content/nosotrxs/Presentación.md",
     "src/content/inicio/Video casa difusa.md",
     "src/content/inicio/Plantas.md",
     "src/content/inicio/Imagen charla.md",
