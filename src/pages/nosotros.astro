@@ -2,7 +2,8 @@
 import { getCollection } from "astro:content";
 import { SITE_DESCRIPTION, COLORS } from "../consts";
 import WebLayout from "../layouts/WebLayout.astro";
-import { Icon } from 'astro-icon/components'
+import { Icon } from 'astro-icon/components';
+import { marked } from 'marked';
 
 function procesarLista(lista) {
     // Separamos la presentación del resto
@@ -25,26 +26,29 @@ function procesarLista(lista) {
         });
 
     return {
-        presentacion: presentacion.body,
+        presentacion: presentacion,
         miembros: miembros,
     };
 }
 
-const { presentacion, miembros } = procesarLista(await getCollection("nosotrxs"));
+const coleccionNosotrxs = await getCollection("nosotrxs");
+const { presentacion, miembros } = procesarLista(coleccionNosotrxs);
+
+// Accedemos directamente al contenido y lo convertimos a HTML
+const presentacionMarkdown = presentacion?.body || "";
+const presentacionHTML = marked.parse(presentacionMarkdown);
 ---
 
 <WebLayout title={"Sobre nosotros"} description={SITE_DESCRIPTION}>
     <div class="flex flex-col gap-10">
         <h1 class={`text-xl neueHaas-medium w-fit p-4 bg-green ${COLORS.raras.bg} rounded`}>Sobre el grupo</h1>
-        <p class="max-w-[900px] bg-white">
-            {presentacion}
-        </p>
+        <div class="max-w-[900px] bg-white prose" set:html={presentacionHTML}></div>
         <div id="miembros-container" class="flex flex-wrap gap-3">
             {
                 miembros.map((miembro) => (
                     <div class={`miembro shadow  border w-full sm:w-60 transition-opacity bg-white rounded `} style="opacity: 0;">
                         <div class={`flex ${COLORS.raras.bg} ${COLORS.raras.br} border-x-0 border-t-0 rounded-t`}>
-                            <p class={`p-1 flex-1 rounded-t`}>{miembro.nombre}</p>
+                            <p class={`p-1 flex-1 rounded-t text-sm`}>{miembro.nombre}</p>
                             {miembro.link ? (
                                 <a
                                     href={miembro.link}

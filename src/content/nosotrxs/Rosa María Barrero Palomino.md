@@ -1,5 +1,5 @@
 ---
 posicion: Doctoranda
-imagen: foto Rosa.jpg
+imagen: fotoRosa.jpg
 contacto: rosa.barrero@udit.es
 ---

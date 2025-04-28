@@ -1,6 +1,6 @@
 ---
 posicion: Doctorando
-imagen: foto Enrique.jpg
+imagen: fotoEnrique.jpg
 contacto: enrique.villamuelas@udit.es
 link: https://eivillamuelas.com/
 ---

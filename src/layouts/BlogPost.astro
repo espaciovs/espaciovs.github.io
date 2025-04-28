@@ -14,7 +14,7 @@ import { COLORS } from "../consts";
 ---
 
 <WebLayout class="flex justify-center realtive">
-    <article class="max-w-full">
+    <article class="max-w-[700px]">
         <div
             class="prose prose-h1:bg-purple-400 prose-h1:p-1 prose-h1:rounded prose-img:rounded prose-hr:border-purple-600 prose-blockquote:bg-purple-100 prose-blockquote:border prose-blockquote:border-purple-600 prose-blockquote:rounded prose-pre:bg-purple-400 prose-p:bg-white"
         >
@@ -22,7 +22,7 @@ import { COLORS } from "../consts";
                 <Icon class="text-lg" name="ri:arrow-left-line" />
                 <p>Volver</p>
             </a>
-            <div class={`w-full sm:w-96 aspect-square my-10 bg-cover bg-center prose-p:bg-white`} style={`background-image: url(/${portada})`}>
+            <div class={`w-full  h-96 my-10 bg-cover bg-center prose-p:bg-white`} style={`background-image: url(/${portada})`}>
             </div>
             <div class="titulo">
                 <div class="date">
@@ -36,8 +36,6 @@ import { COLORS } from "../consts";
                     }
                 </div>
                 <h1 class="neueHaas-medium">{titulo}</h1>
-                <p class="w-2/3 italic">{abstract}</p>
-                <hr />
             </div>
             <slot />
         </div>
