@@ -7,6 +7,9 @@ tags:
   - Datos
   - Domesticidad
 ---
+
+
+
 **Este taller forma parte del proyecto La Casa del Futuro II.** 
 
 La Casa del Futuro hace referencia a las múltiples especulaciones proyectuales sobre cómo habitaremos en el futuro y cómo las tecnologías emerfentes transformarán nuestros espacios cotidianos.
@@ -24,3 +27,7 @@ Estructura del taller: 
 3. Entrenamiento: Observación del proceso de aprendizaje de la IA en Google Colab. 
 
 4. Debate final: Encuesta crítica sobre ética, autoría y futuro profesional.
+
+<div class="py-5 flex justify-center">
+<a href="https://www.generacion-plantas.vercel.app" class="text-2xl p-3 border border-purple-500 hover:bg-purple-300 cursor-pointer no-underline rounded" target="_blank">Acceder a la herramienta</a>
+</div>
