@@ -29,5 +29,5 @@ Estructura del taller: 
 4. Debate final: Encuesta crítica sobre ética, autoría y futuro profesional.
 
 <div class="py-5 flex justify-center">
-<a href="https://www.generacion-plantas.vercel.app" class="text-2xl p-3 border border-purple-500 hover:bg-purple-300 cursor-pointer no-underline rounded" target="_blank">Acceder a la herramienta</a>
+<a href="https://generacion-plantas.vercel.app" class="text-2xl p-3 border border-purple-500 hover:bg-purple-300 cursor-pointer no-underline rounded" target="_blank">Acceder a la herramienta</a>
 </div>
