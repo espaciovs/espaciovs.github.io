@@ -503,7 +503,7 @@
             for (let i = 0; i < 81; i++) {
                 // Div padre con group
                 const cell = document.createElement('div');
-                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square cursor-pointer transition-all duration-200 overflow-hidden';
+                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square cursor-pointer overflow-hidden';
                 
                 // Div hijo para la imagen con escalado en hover
                 const imageDiv = document.createElement('div');
@@ -528,7 +528,7 @@
                 imageDiv.style.backgroundImage = '';
                 imageDiv.innerHTML = '';
                 
-                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square transition-all duration-200 overflow-hidden';
+                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square overflow-hidden';
             });
             
             // Mostrar mensaje en la celda central
@@ -548,7 +548,7 @@
                 imageDiv.style.backgroundImage = '';
                 imageDiv.innerHTML = '';
                 
-                const baseClasses = `group bg-gray-100 border-2 border-gray-200 rounded aspect-square cursor-pointer transition-all duration-200 ${this.isLocked ? 'ring-1 ring-blue-300' : ''}`;
+                const baseClasses = `group bg-gray-100 border-2 border-gray-200 rounded aspect-square cursor-pointer ${this.isLocked ? 'ring-1 ring-blue-300' : ''}`;
                 cell.className = baseClasses;
             });
             
@@ -577,7 +577,7 @@
                     
                     // Resaltar si es la imagen hovereada
                     if (realX === hoverX && realY === hoverY && realZ === hoverZ) {
-                        const highlightClasses = `group bg-gray-100 border-4 border-red-500 rounded aspect-square cursor-pointer transition-all duration-200 scale-105 shadow-lg z-10 relative ${this.isLocked ? 'ring-2 ring-blue-300' : ''}`;
+                        const highlightClasses = `group bg-gray-100 border-4 border-red-500 rounded aspect-square cursor-pointer scale-105 shadow-lg z-10 relative ${this.isLocked ? 'ring-2 ring-blue-300' : ''}`;
                         cell.className = highlightClasses;
                     }
                     
