@@ -1,0 +1,657 @@
+---
+// src/pages/index.astro
+export const prerender = false;
+---
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubo 3D - Visualizador Final</title>
+</head>
+<body class="bg-white font-sans overflow-hidden">
+    <div class="w-screen h-screen flex">
+        <!-- Panel izquierdo: Cubo 3D -->
+        <div class="w-1/2 h-full relative border-r-2 border-gray-200">
+            <div id="cube-container" class="w-full h-full"></div>
+            
+            <div class="absolute top-5 left-5 z-10 bg-white/95 p-4 rounded-lg shadow-lg min-w-52">
+                <div class="mb-3">
+                    <label for="dataset-select" class="block mb-1 text-xs font-bold text-gray-700">Dataset:</label>
+                    <select id="dataset-select" class="w-full p-2 text-xs border border-gray-300 rounded">
+                        <option value="urban" selected>Urban</option>
+                        <option value="housing">Housing</option>
+                    </select>
+                </div>
+                <button id="unLock">Desbloquear</button>
+
+            </div>
+        </div>
+        
+        <!-- Panel derecho: Grid 2D fijo -->
+        <div class="w-1/2 h-full flex flex-col bg-gray-50 relative">
+                <div class="text-xs text-gray-600 absolute top-2 left-2">
+                    <span id="grid-description" class="px-2 py-1 bg-gray-100 rounded font-mono">Hover: ver plano | Click: bloquear plano | Click fuera: desbloquear</span>
+                </div>
+            
+            <!-- Grid fijo 9x9 -->
+            <div class="flex-1 flex items-center justify-center p-10 overflow-hidden">
+                <div id="grid-container" class="grid grid-cols-9 w-full h-full ">
+                    <!-- Los 81 divs se generan aquí -->
+                </div>
+            </div>
+        </div>
+        
+        <div id="loading" class="fixed top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black/90 text-white p-5 rounded-lg text-center">
+            <div>Cargando imágenes del cubo...</div>
+            <div id="progress" class="mt-2">0 / 729</div>
+        </div>
+    </div>
+
+<script>
+    import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+    
+    class CubeVisualizer {
+        constructor() {
+            this.cubeSize = 9;
+            this.currentDataset = 'urban';
+            this.imageSize = 1.5;
+            this.billboardMode = true;
+            this.spacing = 2;
+            
+            this.scene = null;
+            this.camera = null;
+            this.renderer = null;
+            this.imageGrid = [];
+            this.loadedImages = 0;
+            
+            this.mouse = new THREE.Vector2();
+            this.raycaster = new THREE.Raycaster();
+            this.hoveredObject = null;
+            this.lockedPlane = null;
+            
+            this.gridVisualizer = null;
+            
+            this.init();
+        }
+        
+        setGridVisualizer(gridViz) {
+            this.gridVisualizer = gridViz;
+        }
+        
+        init() {
+            const container = document.getElementById('cube-container');
+            
+            // Scene
+            this.scene = new THREE.Scene();
+            this.scene.background = new THREE.Color(0xffffff);
+            
+            // Camera para mitad de pantalla
+            const aspect = (window.innerWidth * 0.5) / window.innerHeight;
+            this.camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+            this.camera.position.set(15, 15, 15);
+            
+            // Renderer
+            const width = window.innerWidth * 0.5;
+            const height = window.innerHeight;
+            this.renderer = new THREE.WebGLRenderer({ antialias: true });
+            this.renderer.setSize(width, height);
+            this.renderer.setClearColor(0xffffff);
+            container.appendChild(this.renderer.domElement);
+            
+            // Luces
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            this.scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(10, 10, 5);
+            this.scene.add(directionalLight);
+            
+            // Controles de mouse
+            this.setupMouseControls();
+            
+            // Eventos
+            window.addEventListener('resize', () => this.onWindowResize());
+            this.renderer.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
+            this.renderer.domElement.addEventListener('click', (e) => this.onMouseClick(e));
+            
+            // Click global para desbloquear
+            const element = document.getElementById("unLock");
+            element.addEventListener('click', (e) => {
+                // Si el click no es en el cubo, desbloquear
+                if (!this.renderer.domElement.contains(e.target)) {
+                    this.unlockPlane();
+                }
+            });
+            
+            this.loadImages();
+        }
+        
+        setupMouseControls() {
+            let isMouseDown = false;
+            let mouseX = 0, mouseY = 0;
+            let targetX = Math.PI * 0.3, targetY = Math.PI * 0.3;
+            let distance = 25;
+            
+            this.renderer.domElement.addEventListener('mousedown', (e) => {
+                isMouseDown = true;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+            
+            this.renderer.domElement.addEventListener('mousemove', (e) => {
+                if (isMouseDown) {
+                    const deltaX = e.clientX - mouseX;
+                    const deltaY = e.clientY - mouseY;
+                    
+                    targetX += deltaX * 0.01;
+                    targetY += deltaY * 0.01;
+                    targetY = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, targetY));
+                    
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                }
+            });
+            
+            this.renderer.domElement.addEventListener('wheel', (e) => {
+                distance += e.deltaY * 0.01;
+                distance = Math.max(10, Math.min(50, distance));
+                e.preventDefault();
+            });
+            
+            const updateCamera = () => {
+                this.camera.position.x = Math.cos(targetX) * Math.cos(targetY) * distance;
+                this.camera.position.y = Math.sin(targetY) * distance;
+                this.camera.position.z = Math.sin(targetX) * Math.cos(targetY) * distance;
+                this.camera.lookAt(0, 0, 0);
+                requestAnimationFrame(updateCamera);
+            };
+            updateCamera();
+        }
+        
+        async loadImages() {
+            document.getElementById('loading').classList.remove('hidden');
+            this.loadedImages = 0;
+            
+            for (let x = 0; x < this.cubeSize; x++) {
+                for (let y = 0; y < this.cubeSize; y++) {
+                    for (let z = 0; z < this.cubeSize; z++) {
+                        await this.loadSingleImage(x, y, z);
+                    }
+                }
+            }
+            
+            document.getElementById('loading').classList.add('hidden');
+            this.animate();
+        }
+        
+        async loadSingleImage(x, y, z) {
+            return new Promise((resolve) => {
+                const filename = `img_x${x.toString().padStart(2, '0')}_y${y.toString().padStart(2, '0')}_z${z.toString().padStart(2, '0')}.jpg`;
+                const imagePath = `/${this.currentDataset}_low/${filename}`;
+                
+                const loader = new THREE.TextureLoader();
+                loader.load(
+                    imagePath,
+                    (texture) => {
+                        this.createImagePlane(x, y, z, texture);
+                        this.updateProgress();
+                        resolve();
+                    },
+                    undefined,
+                    (error) => {
+                        this.createImagePlane(x, y, z, null);
+                        this.updateProgress();
+                        resolve();
+                    }
+                );
+            });
+        }
+        
+        createImagePlane(x, y, z, texture) {
+            const geometry = new THREE.PlaneGeometry(this.imageSize, this.imageSize);
+            
+            let material;
+            if (texture) {
+                // Crear canvas para centrar la imagen en un cuadrado
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const canvasSize = 512;
+                canvas.width = canvasSize;
+                canvas.height = canvasSize;
+                
+                // Fondo transparente
+                ctx.fillStyle = 'rgba(0,0,0,0)';
+                ctx.fillRect(0, 0, canvasSize, canvasSize);
+                
+                // Calcular dimensiones para centrar manteniendo aspect ratio
+                const img = texture.image;
+                const scale = Math.min(canvasSize / img.width, canvasSize / img.height);
+                const newWidth = img.width * scale;
+                const newHeight = img.height * scale;
+                const offsetX = (canvasSize - newWidth) / 2;
+                const offsetY = (canvasSize - newHeight) / 2;
+                
+                // Dibujar imagen centrada
+                ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
+                
+                // Crear textura desde canvas
+                const canvasTexture = new THREE.CanvasTexture(canvas);
+                material = new THREE.MeshBasicMaterial({ 
+                    map: canvasTexture,
+                    transparent: true,
+                    side: THREE.DoubleSide,
+                    alphaTest: 0.01
+                });
+            } else {
+                // Placeholder
+                material = new THREE.MeshBasicMaterial({ 
+                    color: 0x888888, 
+                    transparent: true,
+                    side: THREE.DoubleSide
+                });
+            }
+            
+            const plane = new THREE.Mesh(geometry, material);
+            
+            // Posicionar en el grid 3D (centrado en origen)
+            const offsetX = (x - (this.cubeSize - 1) / 2) * this.spacing;
+            const offsetY = (y - (this.cubeSize - 1) / 2) * this.spacing;
+            const offsetZ = (z - (this.cubeSize - 1) / 2) * this.spacing;
+            
+            plane.position.set(offsetX, offsetY, offsetZ);
+            plane.userData = { x, y, z, originalOpacity: 1 };
+            
+            this.scene.add(plane);
+            this.imageGrid.push(plane);
+        }
+        
+        updateProgress() {
+            this.loadedImages++;
+            document.getElementById('progress').textContent = `${this.loadedImages} / ${this.cubeSize ** 3}`;
+        }
+        
+        onMouseMove(event) {
+            // Si hay un plano bloqueado, no procesar hover
+            if (this.lockedPlane) {
+                return;
+            }
+            
+            const rect = this.renderer.domElement.getBoundingClientRect();
+            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            this.raycaster.setFromCamera(this.mouse, this.camera);
+            const intersects = this.raycaster.intersectObjects(this.imageGrid);
+            
+            if (intersects.length > 0) {
+                const intersected = intersects[0].object;
+                const { x, y, z } = intersected.userData;
+                
+                if (this.isOnExteriorEdge(x, y, z)) {
+                    if (this.hoveredObject !== intersected) {
+                        this.hoveredObject = intersected;
+                        this.highlightSection(x, y, z);
+                    }
+                } else {
+                    this.clearHover();
+                }
+            } else {
+                this.clearHover();
+            }
+        }
+        
+        onMouseClick(event) {
+            const rect = this.renderer.domElement.getBoundingClientRect();
+            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            
+            this.raycaster.setFromCamera(this.mouse, this.camera);
+            const intersects = this.raycaster.intersectObjects(this.imageGrid);
+            
+            if (intersects.length > 0) {
+                const intersected = intersects[0].object;
+                const { x, y, z } = intersected.userData;
+                
+                if (this.isOnExteriorEdge(x, y, z)) {
+                    this.lockPlane(x, y, z);
+                    // Solo prevenir propagación cuando se bloquea un plano
+                    event.stopPropagation();
+                }
+            } 
+        }
+        
+        lockPlane(hoverX, hoverY, hoverZ) {
+            const max = this.cubeSize - 1;
+            let planeAxis = null;
+            let planeValue = null;
+            let planeDescription = '';
+            
+            // Determinar qué plano bloquear
+            if (hoverX === 0 || hoverX === max) {
+                planeAxis = 'y';
+                planeValue = hoverY;
+                planeDescription = `🔒 BLOQUEADO - Plano Y=${hoverY} (Seeds) | Imagen: (${hoverX},${hoverY},${hoverZ})`;
+            } else if (hoverY === 0 || hoverY === max) {
+                planeAxis = 'z';
+                planeValue = hoverZ;
+                planeDescription = `🔒 BLOQUEADO - Plano Z=${hoverZ} (Tamaños) | Imagen: (${hoverX},${hoverY},${hoverZ})`;
+            } else if (hoverZ === 0 || hoverZ === max) {
+                planeAxis = 'x';
+                planeValue = hoverX;
+                planeDescription = `🔒 BLOQUEADO - Plano X=${hoverX} (Prompts) | Imagen: (${hoverX},${hoverY},${hoverZ})`;
+            }
+            
+            this.lockedPlane = { axis: planeAxis, value: planeValue, hoverX, hoverY, hoverZ };
+            
+            // Mantener la sección highlighted
+            this.highlightSection(hoverX, hoverY, hoverZ);
+            
+            // Actualizar grid con estado bloqueado
+            if (this.gridVisualizer) {
+                this.gridVisualizer.lockPlane(planeAxis, planeValue, hoverX, hoverY, hoverZ, planeDescription);
+            }
+        }
+        
+        unlockPlane() {
+            if (this.lockedPlane) {
+                this.lockedPlane = null;
+                this.resetOpacity();
+                if (this.gridVisualizer) {
+                    this.gridVisualizer.unlockPlane();
+                }
+                this.hoveredObject = null;
+            }
+        }
+        
+        clearHover() {
+            // No limpiar si hay un plano bloqueado
+            if (this.lockedPlane) {
+                return;
+            }
+            
+            if (this.hoveredObject) {
+                this.resetOpacity();
+                if (this.gridVisualizer) {
+                    this.gridVisualizer.showEmptyState();
+                }
+                this.hoveredObject = null;
+            }
+        }
+        
+        isOnExteriorEdge(x, y, z) {
+            const max = this.cubeSize - 1;
+            return (x === 0 || x === max) || (y === 0 || y === max) || (z === 0 || z === max);
+        }
+        
+        highlightSection(hoverX, hoverY, hoverZ) {
+            const max = this.cubeSize - 1;
+            let planeAxis = null;
+            let planeValue = null;
+            let planeDescription = '';
+            
+            this.imageGrid.forEach(plane => {
+                const { x, y, z } = plane.userData;
+                let shouldHighlight = false;
+                
+                if (hoverX === 0 || hoverX === max) {
+                    shouldHighlight = (y === hoverY);
+                    planeAxis = 'y';
+                    planeValue = hoverY;
+                    planeDescription = this.lockedPlane ? 
+                        `🔒 BLOQUEADO - Plano Y=${hoverY} (Seeds) | Imagen: (${hoverX},${hoverY},${hoverZ})` :
+                        `Plano Y=${hoverY} (Seeds) | Hover: (${hoverX},${hoverY},${hoverZ})`;
+                } else if (hoverY === 0 || hoverY === max) {
+                    shouldHighlight = (z === hoverZ);
+                    planeAxis = 'z';
+                    planeValue = hoverZ;
+                    planeDescription = this.lockedPlane ?
+                        `🔒 BLOQUEADO - Plano Z=${hoverZ} (Tamaños) | Imagen: (${hoverX},${hoverY},${hoverZ})` :
+                        `Plano Z=${hoverZ} (Tamaños) | Hover: (${hoverX},${hoverY},${hoverZ})`;
+                } else if (hoverZ === 0 || hoverZ === max) {
+                    shouldHighlight = (x === hoverX);
+                    planeAxis = 'x';
+                    planeValue = hoverX;
+                    planeDescription = this.lockedPlane ?
+                        `🔒 BLOQUEADO - Plano X=${hoverX} (Prompts) | Imagen: (${hoverX},${hoverY},${hoverZ})` :
+                        `Plano X=${hoverX} (Prompts) | Hover: (${hoverX},${hoverY},${hoverZ})`;
+                }
+                
+                plane.material.opacity = shouldHighlight ? 1.0 : 0.1;
+            });
+            
+            // Actualizar grid automáticamente (solo si no está bloqueado o si es el primer bloqueo)
+            if (this.gridVisualizer && planeAxis && planeValue !== null) {
+                if (!this.lockedPlane) {
+                    this.gridVisualizer.updatePlane(planeAxis, planeValue, hoverX, hoverY, hoverZ, planeDescription);
+                }
+            }
+        }
+        
+        resetOpacity() {
+            this.imageGrid.forEach(plane => {
+                plane.material.opacity = 1.0;
+            });
+        }
+        
+        onWindowResize() {
+            const width = window.innerWidth * 0.5;
+            const height = window.innerHeight;
+            const aspect = width / height;
+            
+            this.camera.aspect = aspect;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(width, height);
+        }
+        
+        animate() {
+            requestAnimationFrame(() => this.animate());
+            
+            if (this.billboardMode) {
+                this.imageGrid.forEach(plane => {
+                    plane.lookAt(this.camera.position);
+                });
+            }
+            
+            this.renderer.render(this.scene, this.camera);
+        }
+        
+        changeDataset(dataset) {
+            // Desbloquear si hay un plano bloqueado al cambiar dataset
+            this.unlockPlane();
+            
+            this.currentDataset = dataset;
+            this.clearGrid();
+            this.loadImages();
+        }
+        
+        clearGrid() {
+            this.imageGrid.forEach(plane => {
+                this.scene.remove(plane);
+                if (plane.material.map) plane.material.map.dispose();
+                plane.material.dispose();
+                plane.geometry.dispose();
+            });
+            this.imageGrid = [];
+        }
+        
+        updateImageSizes() {
+            const scale = this.imageSize / 0.8;
+            this.imageGrid.forEach(plane => {
+                plane.scale.set(scale, scale, 1);
+            });
+        }
+    }
+    
+    class GridVisualizer {
+        constructor() {
+            this.container = document.getElementById('grid-container');
+            this.currentDataset = 'urban';
+            this.gridCells = [];
+            this.gridImages = []; // Para los divs hijos con las imágenes
+            this.isLocked = false;
+            
+            this.createFixedGrid();
+            this.showEmptyState();
+        }
+        
+        createFixedGrid() {
+            // Crear 81 divs padre con group y divs hijos para las imágenes
+            for (let i = 0; i < 81; i++) {
+                // Div padre con group
+                const cell = document.createElement('div');
+                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square cursor-pointer transition-all duration-200 overflow-hidden';
+                
+                // Div hijo para la imagen con escalado en hover
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'w-full h-full bg-contain bg-center bg-no-repeat pointer-events-none transition-transform duration-300 group-hover:scale-[5] group-hover:z-10';
+                
+                cell.appendChild(imageDiv);
+                this.container.appendChild(cell);
+                this.gridCells.push(cell);
+                this.gridImages.push(imageDiv); // Guardar referencia al div de la imagen
+            }
+        }
+        
+        showEmptyState() {
+            // Si está bloqueado, no mostrar estado vacío
+            if (this.isLocked) {
+                return;
+            }
+            
+            // Limpiar todas las celdas
+            this.gridCells.forEach((cell, index) => {
+                const imageDiv = this.gridImages[index];
+                imageDiv.style.backgroundImage = '';
+                imageDiv.innerHTML = '';
+                
+                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square transition-all duration-200 overflow-hidden';
+            });
+            
+            // Mostrar mensaje en la celda central
+            const centerImageDiv = this.gridImages[40]; // Posición 4,4 (centro)
+            centerImageDiv.innerHTML = '<div class="w-full h-full flex items-center justify-center text-xs text-gray-500 text-center p-1 pointer-events-auto">🖱️<br>Hover<br>+<br>Click</div>';
+            
+            document.getElementById('grid-description').textContent = 'Hover: ver plano | Click: bloquear plano | Click fuera: desbloquear';
+        }
+        
+        updatePlane(axis, value, hoverX, hoverY, hoverZ, description) {
+            // Actualizar descripción
+            document.getElementById('grid-description').textContent = description;
+            
+            // Limpiar todas las celdas
+            this.gridCells.forEach((cell, index) => {
+                const imageDiv = this.gridImages[index];
+                imageDiv.style.backgroundImage = '';
+                imageDiv.innerHTML = '';
+                
+                const baseClasses = `group bg-gray-100 border-2 border-gray-200 rounded aspect-square cursor-pointer transition-all duration-200 ${this.isLocked ? 'ring-1 ring-blue-300' : ''}`;
+                cell.className = baseClasses;
+            });
+            
+            let cellIndex = 0;
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    // Calcular coordenadas reales según el eje del plano
+                    let realX, realY, realZ;
+                    if (axis === 'x') {
+                        realX = value; realY = i; realZ = j;
+                    } else if (axis === 'y') {
+                        realX = i; realY = value; realZ = j;
+                    } else { // z
+                        realX = i; realY = j; realZ = value;
+                    }
+                    
+                    const filename = `img_x${realX.toString().padStart(2, '0')}_y${realY.toString().padStart(2, '0')}_z${realZ.toString().padStart(2, '0')}.jpg`;
+                    const imagePath = `/${this.currentDataset}/${filename}`;
+                    
+                    const cell = this.gridCells[cellIndex];
+                    const imageDiv = this.gridImages[cellIndex];
+                    
+                    cell.dataset.x = realX;
+                    cell.dataset.y = realY;
+                    cell.dataset.z = realZ;
+                    
+                    // Resaltar si es la imagen hovereada
+                    if (realX === hoverX && realY === hoverY && realZ === hoverZ) {
+                        const highlightClasses = `group bg-gray-100 border-4 border-red-500 rounded aspect-square cursor-pointer transition-all duration-200 scale-105 shadow-lg z-10 relative ${this.isLocked ? 'ring-2 ring-blue-300' : ''}`;
+                        cell.className = highlightClasses;
+                    }
+                    
+                    // Precargar imagen
+                    const testImg = new Image();
+                    testImg.onload = () => {
+                        imageDiv.style.backgroundImage = `url('${imagePath}')`;
+                    };
+                    testImg.onerror = () => {
+                        imageDiv.style.backgroundColor = '#e5e7eb';
+                        imageDiv.innerHTML = '<div class="w-full h-full flex items-center justify-center text-xs text-gray-400 pointer-events-auto">❌</div>';
+                    };
+                    testImg.src = imagePath;
+                    
+                    cellIndex++;
+                }
+            }
+        }
+        
+        lockPlane(axis, value, hoverX, hoverY, hoverZ, description) {
+            this.isLocked = true;
+            
+            // Actualizar descripción con indicador de bloqueo
+            document.getElementById('grid-description').textContent = description;
+            
+            // Aplicar el plano como normal pero con estado bloqueado
+            this.updatePlane(axis, value, hoverX, hoverY, hoverZ, description);
+            
+            // Añadir borde azul a todas las celdas para indicar que está bloqueado
+            this.gridCells.forEach(cell => {
+                if (cell.className.includes('border-red-500')) {
+                    // Para la celda highlighted, combinar rojo y azul
+                    cell.className += ' ring-4 ring-blue-400';
+                } else {
+                    cell.className += ' ring-1 ring-blue-300';
+                }
+            });
+        }
+        
+        unlockPlane() {
+            this.isLocked = false;
+            
+            // Volver al estado vacío
+            this.showEmptyState();
+        }
+        
+        changeDataset(dataset) {
+            this.currentDataset = dataset;
+            // No necesita recargar nada, las imágenes se actualizarán en el próximo hover
+        }
+    }
+    
+    // Inicialización
+    window.addEventListener('load', () => {
+        const cubeViz = new CubeVisualizer();
+        const gridViz = new GridVisualizer();
+        
+        // Conectar visualizadores
+        cubeViz.setGridVisualizer(gridViz);
+        
+        // Setup controles
+        document.getElementById('dataset-select').addEventListener('change', (e) => {
+            const dataset = e.target.value;
+            cubeViz.changeDataset(dataset);
+            gridViz.changeDataset(dataset);
+        });
+        
+        document.getElementById('size-slider').addEventListener('input', (e) => {
+            cubeViz.imageSize = parseFloat(e.target.value);
+            document.getElementById('size-value').textContent = cubeViz.imageSize;
+            cubeViz.updateImageSizes();
+        });
+    });
+</script>
+</body>
+</html>
