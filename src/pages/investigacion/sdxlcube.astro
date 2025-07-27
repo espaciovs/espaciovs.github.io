@@ -503,11 +503,11 @@
             for (let i = 0; i < 81; i++) {
                 // Div padre con group
                 const cell = document.createElement('div');
-                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square cursor-pointer overflow-hidden';
+                cell.className = 'group bg-gray-100 border-2 border-transparent rounded aspect-square cursor-cross overflow-hidden';
                 
                 // Div hijo para la imagen con escalado en hover
                 const imageDiv = document.createElement('div');
-                imageDiv.className = 'w-full h-full bg-contain bg-center bg-no-repeat pointer-events-none transition-transform duration-300 group-hover:scale-[5] group-hover:z-10';
+                imageDiv.className = 'w-full h-full bg-contain bg-center bg-no-repeat pointer-events-none group-hover:scale-[5] group-hover:z-10';
                 
                 cell.appendChild(imageDiv);
                 this.container.appendChild(cell);
