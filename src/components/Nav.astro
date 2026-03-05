@@ -6,8 +6,8 @@ const { mobile } = Astro.props;
 
 <nav class={` ${mobile ? "flex sm:hidden" : "flex flex-1"} flex-col gap-2  `}>
     <div class="flex flex-col gap-2">
-        <a class={`px-1 flex justify-end rounded ${COLORS.main.act} ${COLORS.main.hv} transition-all text-4xl px-2`} href="/">
-            <span class="flex-1">vs</span><span class="">IADE</span> 
+        <a class={`px-1 flex justify-end rounded rounded-br-3xl rounded-tl-3xl ${COLORS.main.act} ${COLORS.main.hv} transition-all text-4xl px-2`} href="/">
+            <span class="flex-1 mt-6">vs</span><span class="">IADE</span> 
         </a>
         <h1 class={`uppercas text-sm p-1 transition-all `}>{SITE_SUBTITLE}</h1>
     </div>
