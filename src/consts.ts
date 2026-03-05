@@ -2,8 +2,8 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'IAD';
-export const SITE_SUBTITLE = 'Inteligencia artificial aplicada al diseño';
-export const SITE_DESCRIPTION = 'Grupo de investigación Versus. UDIT';
+export const SITE_SUBTITLE = 'Grupo de investigación Versus. Inteligencia artificial aplicada al diseño espacial';
+export const SITE_DESCRIPTION = 'UDIT';
 export const COLORS = {
     main:{
         bg: "bg-purple-200",

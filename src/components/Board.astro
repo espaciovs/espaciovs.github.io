@@ -18,11 +18,11 @@ const { items } = Astro.props;
     {
         items.map((item) => (
             <div
-                class="draggable-postit block sm:absolute w-full sm:w-96 max-h-96 max-w-full  bg-white shadow-sm hover:shadow-md transition-shadow shadow-black rounded overflow-hidden cursor-move select-none transition-opacity"
+                class="draggable-postit block sm:absolute w-full sm:w-96 max-h-96 max-w-full bg-white shadow-sm hover:shadow-md transition-shadow shadow-black rounded overflow-hidden cursor-move select-none transition-opacity"
                 style="z-index: 1; opacity: 0;"
                 id={`postit-${item.id}`}
             >
-                <div class={`postit-header ${COLORS.main.act} p-2 text-sm font-semibold`}></div>
+                <div class={`postit-header ${COLORS.main.act} p-2 text-sm font-semibold`} />
                 {item.texto && <div class="p-3 text-sm">{item.texto}</div>}
                 {item.imagen && <img src={item.imagen} alt={item.title} class="w-full h-auto" />}
                 {item.video && (
@@ -48,71 +48,31 @@ const { items } = Astro.props;
             element.style.zIndex = currentZIndex.toString();
         }
 
-        // Función para verificar si hay colisión entre dos elementos
-        function checkCollision(rect1: DOMRect, rect2: DOMRect): boolean {
-            return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
-        }
-
-        // Función para obtener una posición válida para un elemento
-        function getValidPosition(element: HTMLElement, boardRect: DOMRect, existingPositions: DOMRect[]): { x: number; y: number } {
-            const padding = 20; // Espacio entre elementos
-            const elementRect = element.getBoundingClientRect();
-            const maxAttempts = 50; // Número máximo de intentos para encontrar una posición válida
-
-            for (let attempt = 0; attempt < maxAttempts; attempt++) {
-                // Calcular posición aleatoria dentro de los límites del board
-                const x = Math.floor(Math.random() * (boardRect.width - elementRect.width - padding * 2)) + padding;
-                const y = Math.floor(Math.random() * (boardRect.height - elementRect.height - padding * 2)) + padding;
-
-                // Crear un rectángulo temporal para la nueva posición
-                const newRect = new DOMRect(x, y, elementRect.width, elementRect.height);
-
-                // Verificar colisiones con posiciones existentes
-                let hasCollision = false;
-                for (const existingRect of existingPositions) {
-                    if (checkCollision(newRect, existingRect)) {
-                        hasCollision = true;
-                        break;
-                    }
-                }
-
-                if (!hasCollision) {
-                    return { x, y };
-                }
-            }
-
-            // Si no se encuentra una posición sin colisiones, usar una posición en cascada
-            const lastPosition = existingPositions[existingPositions.length - 1];
-            return {
-                x: (lastPosition?.left ?? padding) + padding,
-                y: (lastPosition?.top ?? padding) + padding,
-            };
-        }
-
         function randomizePositions() {
-            const boardRect = board.getBoundingClientRect();
-            const existingPositions: DOMRect[] = [];
+    const boardRect = board.getBoundingClientRect();
+    const padding = 20;
 
-            postits.forEach((postit) => {
-                const element = postit as HTMLElement;
+    postits.forEach((postit) => {
+        const element = postit as HTMLElement;
+        const w = element.offsetWidth;
+        const h = element.offsetHeight;
 
-                // Obtener una posición válida para el elemento
-                const { x, y } = getValidPosition(element, boardRect, existingPositions);
+        let x = padding + Math.random() * (boardRect.width - w - padding * 2);
+        let y = padding + Math.random() * (boardRect.height - h - padding * 2);
 
-                // Aplicar la posición
-                element.style.left = `${x}px`;
-                element.style.top = `${y}px`;
+        // Corregir si se sale
+        if (x < padding) x = padding;
+        if (y < padding) y = padding;
+        if (x + w > boardRect.width - padding) x = boardRect.width - w - padding;
+        if (y + h > boardRect.height - padding) y = boardRect.height - h - padding;
 
-                // Agregar la posición a las existentes
-                existingPositions.push(new DOMRect(x, y, element.offsetWidth, element.offsetHeight));
-            });
-        }
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+    });
+}
 
         function dragElement(elmnt: HTMLElement) {
-            let pos1 = 0,
-                pos2 = 0,
-                pos3 = 0,
-                pos4 = 0;
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
             elmnt.addEventListener("mousedown", () => {
                 bringToFront(elmnt);
@@ -137,13 +97,11 @@ const { items } = Astro.props;
 
                 const boardRect = board.getBoundingClientRect();
                 const elmntRect = elmnt.getBoundingClientRect();
-                const padding = 20; // Mismo padding que en posicionamiento
+                const padding = 20;
 
-                // Calcular nuevas posiciones teniendo en cuenta el padding
                 let newTop = elmnt.offsetTop - pos2;
                 let newLeft = elmnt.offsetLeft - pos1;
 
-                // Limitar las posiciones para mantener el elemento dentro del board con padding
                 newTop = Math.max(padding, Math.min(newTop, boardRect.height - elmntRect.height - padding));
                 newLeft = Math.max(padding, Math.min(newLeft, boardRect.width - elmntRect.width - padding));
 
@@ -157,37 +115,32 @@ const { items } = Astro.props;
             }
         }
 
-        // Inicializar solo en pantallas que no son móviles
         if (window.matchMedia("(min-width: 640px)").matches) {
             postits.forEach((postit) => {
                 const element = postit as HTMLElement;
                 dragElement(element);
             });
             randomizePositions();
-            // Esperamos un pequeño momento para que el DOM se actualice
-            
         }
+
         setTimeout(() => {
-                postits.forEach((postit, index) => {
-                    // Añadimos un pequeño retraso entre cada elemento
-                    setTimeout(() => {
-                        postit.style.opacity = "1";
-                    }, index * 100); // 100ms entre cada elemento
-                });
-            }, 0);
+            postits.forEach((postit, index) => {
+                setTimeout(() => {
+                    postit.style.opacity = "1";
+                }, index * 100);
+            });
+        }, 0);
     }
 
     function init() {
         initDraggableElements();
     }
 
-    // Inicializar cuando el DOM esté listo
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", init);
     } else {
         init();
     }
 
-    // Reinicializar cuando Astro hace una navegación
     document.addEventListener("astro:page-load", init);
 </script>
