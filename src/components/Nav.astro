@@ -12,8 +12,7 @@ const { mobile } = Astro.props;
         <h1 class={`uppercas text-sm p-1 transition-all `}>{SITE_SUBTITLE}</h1>
     </div>
     <div class={`flex flex-col gap-1 ${mobile ? "" : "flex-1"}`}>
-        <HeaderLink href="/" colors={COLORS} class="rounded-t">Inicio</HeaderLink>
-        <HeaderLink href="/investigacion" colors={COLORS}>Investigación</HeaderLink>
+        <HeaderLink class="rounded-t" href="/investigacion" colors={COLORS}>Investigación</HeaderLink>
         <HeaderLink href="/nosotros" colors={COLORS} class="rounded-b">Sobre el grupo</HeaderLink>
     </div>
 </nav>
